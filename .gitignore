@@ -1,11 +1,17 @@
 *.class
 build
+target
 
 # Intellij files #
 .idea
 *.iml
 *.ipr
 *.iws
+
+# Eclipse files #
+.classpath
+.project
+.settings
 
 # gradle files #
 .gradle
