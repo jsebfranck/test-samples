@@ -5,7 +5,7 @@ package jsebfranck.samples.mockito;
  */
 public class AccountRepository {
 
-    public void createAccount(Account account) throws EntityAlreadyExistsException {
+    public void createAccount(Account account) {
       throw new UnsupportedOperationException("not implemented yet");
     }
 

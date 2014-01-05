@@ -19,26 +19,19 @@ public class AccountService {
   }
 
   public void createAccount(String login, String password) throws ServiceException {
-    Account account = new Account();
-    account.setLogin(login);
-    account.setPassword(password);
-
-    checkAccountParameters(account);
-
-    try {
-      accountRepository.createAccount(account);
-    } catch (EntityAlreadyExistsException eaee) {
-      throw new ServiceException(String.format("The account %s already exists", login));
-    }
-  }
-
-  void checkAccountParameters(Account account) throws ServiceException {
-    if (account.getLogin() == null) {
+    if (login == null) {
       throw new ServiceException("Account field is mandatory");
     }
 
-    if (account.getPassword() == null) {
+    if (password == null) {
       throw new ServiceException("Password field is mandatory");
     }
+
+    if (getAccountByLogin(login) != null) {
+      throw new ServiceException(String.format("The account %s already exists", login));
+    }
+
+    Account account = new Account(login, password);
+    accountRepository.createAccount(account);
   }
 }

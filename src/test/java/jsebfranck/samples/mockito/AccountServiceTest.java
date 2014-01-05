@@ -23,16 +23,19 @@ public class AccountServiceTest {
    * 
    * - mock creation : OK
    * - doReturn : OK
-   * - argument capture : OK
-   * - doThrow : OK
-   * - spy : OK
    * - verifyNoMoreInteractions : OK
-   * - any : OK
+   * - doThrow : OK
+   * - argument capture : OK
+   * - spy : OK
+   * - verify with any : TODO
+   * - verify with
+   * parameters : OK
    * - void method : OK
    */
 
   private static final String LOGIN = "login";
   private static final String PASSWORD = "password";
+  private static final Account EXISTING_ACCOUNT = new Account(LOGIN, PASSWORD);
 
   @InjectMocks
   @Spy
@@ -44,14 +47,13 @@ public class AccountServiceTest {
   @Test
   public void getAccountByLogin_withExistingAccount_shouldReturnTheAccount() throws Exception {
     // Given
-    Account account = new Account();
-    doReturn(account).when(accountRepository).findAccount(LOGIN);
+    doReturn(EXISTING_ACCOUNT).when(accountRepository).findAccount(LOGIN);
 
     // When
     Account result = accountService.getAccountByLogin(LOGIN);
 
     // Then
-    assertEquals(account, result);
+    assertEquals(EXISTING_ACCOUNT, result);
     verify(accountRepository).findAccount(LOGIN);
     verifyNoMoreInteractions(accountRepository);
   }
@@ -69,8 +71,10 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void createAccount_nominalCase_shouldCreateTheAccount()
-      throws Exception {
+  public void createAccount_nominalCase_shouldCreateTheAccount() throws Exception {
+    // Given
+    doReturn(null).when(accountService).getAccountByLogin(LOGIN);
+
     // When
     accountService.createAccount(LOGIN, PASSWORD);
 
@@ -83,13 +87,13 @@ public class AccountServiceTest {
 
     verifyNoMoreInteractions(accountRepository);
 
-    verify(accountService).checkAccountParameters(any(Account.class));
+    verify(accountService).getAccountByLogin(LOGIN);
   }
 
   @Test(expected = ServiceException.class)
   public void createAccount_withAnExistingAccount_shouldThrowsServiceException() throws Exception {
     // Given
-    doThrow(new EntityAlreadyExistsException()).when(accountRepository).createAccount(any(Account.class));
+    doReturn(EXISTING_ACCOUNT).when(accountService).getAccountByLogin(LOGIN);
 
     // When
     accountService.createAccount(LOGIN, PASSWORD);
@@ -97,45 +101,19 @@ public class AccountServiceTest {
     // Then assert that a ServiceException is thrown
   }
 
-  @Test
-  public void checkAccountParameters_withCorrectAccount_shouldDoNothing() throws Exception {
-    // Given
-    Account account = createAccountWithCorrectParameters();
-
-    // When
-    accountService.checkAccountParameters(account);
-
-    // Then
-  }
-
   @Test(expected = ServiceException.class)
-  public void checkAccountParameters_withNullLogin_shouldThrowsServiceException() throws Exception {
-    // Given
-    Account account = createAccountWithCorrectParameters();
-    account.setLogin(null);
-
+  public void createAccount_withNullLogin_shouldThrowsServiceException() throws Exception {
     // When
-    accountService.checkAccountParameters(account);
+    accountService.createAccount(null, PASSWORD);
 
     // Then assert that a ServiceException is thrown
   }
 
   @Test(expected = ServiceException.class)
-  public void checkAccountParameters_withNullPassword_shouldThrowsServiceException() throws Exception {
-    // Given
-    Account account = createAccountWithCorrectParameters();
-    account.setPassword(null);
-
+  public void createAccount_withNullPassword_shouldThrowsServiceException() throws Exception {
     // When
-    accountService.checkAccountParameters(account);
+    accountService.createAccount(LOGIN, null);
 
     // Then assert that a ServiceException is thrown
-  }
-
-  private Account createAccountWithCorrectParameters() {
-    Account account = new Account();
-    account.setLogin(LOGIN);
-    account.setPassword(PASSWORD);
-    return account;
   }
 }
