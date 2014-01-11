@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin :'idea'
+apply plugin: 'sonar-runner'
+apply plugin: 'jacoco'
 
 tasks.withType(Test) {
     afterTest { descriptor, result ->
@@ -11,6 +13,13 @@ tasks.withType(Test) {
     }
 }
 
+sonarRunner {
+    sonarProperties {
+        property "sonar.projectName", "test-samples"
+        property "sonar.projectKey", "jsebfranck.samples"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    }
+}
 
 repositories {
     mavenCentral()
