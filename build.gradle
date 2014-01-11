@@ -3,6 +3,11 @@ apply plugin :'idea'
 apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
 
+subprojects {
+  apply plugin: 'java'
+  apply plugin: 'jacoco'
+}
+
 tasks.withType(Test) {
     afterTest { descriptor, result ->
         logger.info("Executed test ${descriptor.getClassName().substring(descriptor.getClassName().lastIndexOf('.') + 1 )}.${descriptor.name} (${result.getEndTime() - result.getStartTime()}ms): ${result.getResultType()}")
@@ -21,13 +26,3 @@ sonarRunner {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'javax.inject', name: 'javax.inject', version: '1'
-
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
-}
