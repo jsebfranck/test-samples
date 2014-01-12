@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 
 @RunWith(Arquillian.class)
-@Ignore
 public class FirstArquillianTest {
 
     @Deployment
