@@ -26,9 +26,21 @@ allprojects {
     }
   }
 
+  test {
+      jacoco {
+          append = true
+          destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+      }
+  }
+
   task "integtest"(type: Test, dependsOn: integtestClasses) {
     testClassesDir = sourceSets.integtest.output.classesDir
     classpath = sourceSets.integtest.runtimeClasspath
+
+      jacoco {
+          append = true
+          destinationFile = file("$buildDir/jacoco/jacocoIntegTest.exec")
+      }
   }
 
   configurations {
@@ -43,12 +55,14 @@ allprojects {
     testLogging {
         exceptionFormat "full"
     }
-
-    jacoco {
-        append = true
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-    }
   }
+
+    sonarRunner {
+        sonarProperties {
+            property "sonar.jacoco.reportPath", "$buildDir/jacoco/jacocoTest.exec"
+            property "sonar.jacoco.itReportPath", "$buildDir/jacoco/jacocoIntegTest.exec"
+        }
+    }
 }
 
 sonarRunner {
