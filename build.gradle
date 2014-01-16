@@ -34,9 +34,8 @@ allprojects {
   configurations {
     integtestCompile.extendsFrom testCompile
   }
-}
 
-tasks.withType(Test) {
+  tasks.withType(Test) {
     afterTest { descriptor, result ->
         logger.info("Executed test ${descriptor.getClassName().substring(descriptor.getClassName().lastIndexOf('.') + 1 )}.${descriptor.name} (${result.getEndTime() - result.getStartTime()}ms): ${result.getResultType()}")
     }
@@ -44,13 +43,18 @@ tasks.withType(Test) {
     testLogging {
         exceptionFormat "full"
     }
+
+    jacoco {
+        append = true
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+    }
+  }
 }
 
 sonarRunner {
     sonarProperties {
         property "sonar.projectName", "test-samples"
         property "sonar.projectKey", "jsebfranck.samples"
-        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
     }
 }
 
