@@ -4,6 +4,36 @@ allprojects {
   apply plugin: 'java'
   apply plugin: 'jacoco'
   apply plugin: 'idea'
+
+
+  sourceSets {
+    integtest {
+      java {
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+        srcDir 'src/integtest/java'
+      }
+      resources {
+        srcDir 'src/integtest/resources'
+      }
+    }
+  }
+
+  idea {
+    module {
+      testSourceDirs += file('src/integtest/java')
+      testSourceDirs += file('src/integtest/resources')
+    }
+  }
+
+  task "integtest"(type: Test, dependsOn: integtestClasses) {
+    testClassesDir = sourceSets.integtest.output.classesDir
+    classpath = sourceSets.integtest.runtimeClasspath
+  }
+
+  configurations {
+    integtestCompile.extendsFrom testCompile
+  }
 }
 
 tasks.withType(Test) {
