@@ -1,2 +1,3 @@
 include "mockito-samples"
 include "arquillian-samples"
+include "casperjs-samples"
