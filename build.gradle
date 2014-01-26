@@ -1,10 +1,27 @@
 apply plugin: 'sonar-runner'
 
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.2.1'
+  }
+}
+
 allprojects {
   apply plugin: 'java'
   apply plugin: 'jacoco'
   apply plugin: 'idea'
+  apply plugin: 'coveralls'
 
+  // jacoco configuration for coveralls
+  jacocoTestReport {
+    reports {
+      xml.enabled = true // coveralls plugin depends on xml format report
+      html.enabled = true
+    }
+  }
 
   sourceSets {
     integtest {

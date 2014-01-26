@@ -1,4 +1,9 @@
 language: java
+
 script: gradle test integTest
+
 jdk:
   - oraclejdk7
+
+after_success:
+- gradle jacocoTestReport coveralls
