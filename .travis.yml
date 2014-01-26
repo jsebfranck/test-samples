@@ -1,9 +1,12 @@
 language: java
 
-script: gradle test integTest
+script: gradle build test integTest
 
 jdk:
   - oraclejdk7
+
+env:
+- TERM=dumb
 
 after_success:
 - gradle jacocoTestReport coveralls
