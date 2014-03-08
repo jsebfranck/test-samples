@@ -1,6 +1,7 @@
 *.class
 build
 target
+*.png
 
 # Intellij files #
 .idea
