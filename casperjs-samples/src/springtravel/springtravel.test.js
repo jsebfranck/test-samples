@@ -2,11 +2,12 @@
 phantom.page.injectJs('LoginPage.js');
 phantom.page.injectJs('SearchPage.js');
 phantom.page.injectJs('SearchResultPage.js');
+phantom.page.injectJs('BookingListingPage.js');
 
-var baseUrl = 'http://localhost:8080/';
 var loginPage = new LoginPage();
 var searchPage = new SearchPage();
 var searchResultPage = new SearchResultPage();
+var bookingListingPage = new BookingListingPage();
 
 casper.test.begin('When I connect myself I should see my bookings', function (test) {
   loginPage.startOnLoginPage();
@@ -14,8 +15,8 @@ casper.test.begin('When I connect myself I should see my bookings', function (te
   loginPage.fillForm('scott', 'rochester');
   loginPage.submitForm();
 
-  searchPage.checkPage();
-  searchPage.checkThatBookingsAreDisplayed();
+  bookingListingPage.checkPage();
+  bookingListingPage.checkThatBookingsAreDisplayed();
 
   casper.run(function () {
     test.done();

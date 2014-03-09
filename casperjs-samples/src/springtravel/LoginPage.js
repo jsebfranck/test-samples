@@ -1,7 +1,8 @@
 function LoginPage() {
 
   this.startOnLoginPage = function () {
-    casper.start('http://localhost:8080/login');
+    casper.echo("base url is : " + casper.cli.options.baseUrl);
+    casper.start(casper.cli.options.baseUrl + '/login');
   };
 
   this.checkPage = function () {
