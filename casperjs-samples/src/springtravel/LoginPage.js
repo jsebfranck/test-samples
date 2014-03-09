@@ -4,9 +4,10 @@ function LoginPage() {
     casper.start('http://localhost:8080/login');
   };
 
-  this.checkIsOnLoginPage = function () {
+  this.checkPage = function () {
     casper.then(function () {
-      casper.test.assertExists('form[name="f"]', 'Is on login page');
+      casper.test.assertUrlMatch('login', 'Is on login page');
+      casper.test.assertExists('form[name="f"]', 'Login page form has been found');
     });
   };
 

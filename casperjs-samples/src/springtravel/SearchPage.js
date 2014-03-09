@@ -1,6 +1,6 @@
 function SearchPage() {
 
-  this.checkIsOnSearchPage = function () {
+  this.checkPage = function () {
     casper.then(function () {
       casper.test.assertUrlMatch('hotels/search', 'Is on search page');
     });

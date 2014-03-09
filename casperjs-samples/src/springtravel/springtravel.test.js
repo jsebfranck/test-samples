@@ -10,11 +10,11 @@ var searchResultPage = new SearchResultPage();
 
 casper.test.begin('When I connect myself I should see my bookings', function (test) {
   loginPage.startOnLoginPage();
-  loginPage.checkIsOnLoginPage();
+  loginPage.checkPage();
   loginPage.fillForm('scott', 'rochester');
   loginPage.submitForm();
 
-  searchPage.checkIsOnSearchPage();
+  searchPage.checkPage();
   searchPage.checkThatBookingsAreDisplayed();
 
   casper.run(function () {
@@ -24,15 +24,15 @@ casper.test.begin('When I connect myself I should see my bookings', function (te
 
 casper.test.begin('When I connect myself and search hotels in Atlanta Then should find three hotels', function (test) {
   loginPage.startOnLoginPage();
-  loginPage.checkIsOnLoginPage();
+  loginPage.checkPage();
   loginPage.fillForm('scott', 'rochester');
   loginPage.submitForm();
 
-  searchPage.checkIsOnSearchPage();
+  searchPage.checkPage();
   searchPage.fillSearchForm('Atlanta');
   searchPage.submitSearchForm();
 
-  searchResultPage.checkIsOnSearchResultPage();
+  searchResultPage.checkPage();
   searchResultPage.checkThatResultsAreDisplayed(3);
 
   casper.run(function () {
